@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Discount.Grpc.Models;
 using Discount.Grpc.Protos;
 using Discount.Grpc.Repository;
 using Grpc.Core;
@@ -28,8 +29,43 @@ namespace Discount.Grpc.Services
             }
 
             _logger.LogInformation($"Discount is retrived for ProductName: {coupon.ProductName}, Amount:{coupon.Amount}");
-            
+
             return _mapper.Map<CouponRequest>(coupon);
+        }
+
+        public override async Task<CouponRequest> CreateDiscount(CouponRequest request, ServerCallContext context)
+        {
+            var coupon = _mapper.Map<Coupon>(request);
+            bool isSaved = await _couponRepository.CreateDiscount(coupon);
+            if (isSaved)
+            {
+                _logger.LogInformation($"Discount is successfully created. ProductName: {coupon.ProductName}");
+            }
+            _logger.LogInformation($"Discount creation failed.");
+            return _mapper.Map<CouponRequest>(coupon);
+        }
+
+        public override async Task<CouponRequest> UpdateDiscount(CouponRequest request, ServerCallContext context)
+        {
+            var coupon = _mapper.Map<Coupon>(request);
+            bool isModified = await _couponRepository.UpdateDiscount(coupon);
+            if (isModified)
+            {
+                _logger.LogInformation($"Discount is successfully updated. ProductName: {coupon.ProductName}");
+            }
+            _logger.LogInformation($"Discount update failed.");
+            return _mapper.Map<CouponRequest>(coupon);
+        }
+
+        public override async Task<DeleteDiscountResponse> DeleteDiscount(DeleteDiscountRequest request, ServerCallContext context)
+        {
+            bool isDeleted = await _couponRepository.DeleteDiscount(request.ProductId);
+            if (isDeleted)
+            {
+                _logger.LogInformation($"Discount has been deleted. ProductName: {request.ProductId}");
+            }
+            _logger.LogInformation($"Discount deletion failed.");
+            return new DeleteDiscountResponse { Success = isDeleted };
         }
     }
 }
