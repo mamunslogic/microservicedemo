@@ -25,7 +25,7 @@ namespace Ordering.Infrastructure.Persistence
                     City = "Dhaka",
                     State = "Bangladesh",
                     TotalPrice = 100,
-                },
+                }
                 //new Order
                 //{
                 //    Id = 2,

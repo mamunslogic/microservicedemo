@@ -25,7 +25,7 @@ namespace Ordering.Application.Features.Orders.Commands.CreateOrder
             bool isOrderPlaced = await _orderRepository.AddAsync(order);
             if (isOrderPlaced)
             {
-                await _emailService.SendEmailAsync(new Models.Email
+                await _emailService.SendEmailAsync(new Models.EmailMessage
                 {
                     Subject = "Your order has been placed",
                     Body = $"Dear {order.FirstName} {order.LastName} <br/><br/> We are excited for you to received your order #{order.Id} and with notify you once it's way. <br/> Thank you for ordering.",
