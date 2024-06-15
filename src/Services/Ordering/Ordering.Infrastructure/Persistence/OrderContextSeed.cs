@@ -1,10 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Ordering.Domain.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Ordering.Infrastructure.Persistence
 {
@@ -24,21 +19,17 @@ namespace Ordering.Infrastructure.Persistence
                     Address = "Dhaka",
                     City = "Dhaka",
                     State = "Bangladesh",
+                    ZipCode = "1212",
                     TotalPrice = 100,
-                }
-                //new Order
-                //{
-                //    Id = 2,
-                //    Username = "mamunslogic@yahoo.com",
-                //    FirstName = "Abdur Rashid",
-                //    LastName = "Mamun",
-                //    EmailAddress = "mamunslogic@gmail.com",
-                //    Address = "Dhaka",
-                //    City = "Dhaka",
-                //    State = "Bangladesh",
-                //    TotalPrice = 100,
-                //}
-                );
+                    CardName = "Test",
+                    CardNumber = "Test",
+                    CreatedBy = "Test",
+                    CreatedDate = DateTime.Now,
+                    CVV = "Test",
+                    Expiration = DateTime.Now.AddYears(3).ToShortDateString(),
+                    PaymentMethod = 1,
+                    PhoneNumber = "01712371173",
+                });
         }
     }
 }
