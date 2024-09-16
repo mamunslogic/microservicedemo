@@ -1,10 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Ordering.Domain.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Ordering.Infrastructure.Persistence
 {
@@ -29,12 +24,13 @@ namespace Ordering.Infrastructure.Persistence
                     State = "Bangladesh",
                     ZipCode="1216",
                     TotalPrice = 100,
-                    PhoneNumber = "1234567890",
-                  
+                    PhoneNumber = "01712371173",
                     CardName = "Mamun",
                     CardNumber = "963852741",
                     CVV = "639",
-                    Expiration = "1226",
+                    Expiration = DateTime.Now.AddYears(3).ToShortDateString(),
+                    PaymentMethod = 1,
+
                 }
                 //new Order
                 //{

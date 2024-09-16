@@ -11,7 +11,7 @@ namespace Ordering.Infrastructure.Mail
             Email email = new();
             if (email.IsValidEmail(emailMessage.To))
             {
-                return email.SendEmail(emailMessage.To, "", "", emailMessage.Subject, emailMessage.Body);
+                return email.SendEmail(emailMessage.To, EmailCredential.EmailAddress, EmailCredential.Password, emailMessage.Subject, emailMessage.Body);
             }
             return false;
         }

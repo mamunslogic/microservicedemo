@@ -26,7 +26,8 @@ namespace Ordering.API.Controllers
         {
             try
             {
-                var orders = await _mediator.Send(new GetOrdersByUserQuery(username));
+                var getOrdersByUserQuery = new GetOrdersByUserQuery(username);
+                var orders = await _mediator.Send(getOrdersByUserQuery);
                 return CustomResult("Order load successful.", orders);
             }
             catch (Exception exception)
