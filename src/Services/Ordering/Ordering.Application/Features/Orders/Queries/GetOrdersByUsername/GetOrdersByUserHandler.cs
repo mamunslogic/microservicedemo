@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
-using Ordering.Application.Contracts.Persistence;
+using Ordering.Application.Contacts.Persistence;
 
 namespace Ordering.Application.Features.Orders.Queries.GetOrdersByUsername
 {

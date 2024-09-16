@@ -1,6 +1,6 @@
 ﻿using EF.Core.Repository.Repository;
 using Microsoft.EntityFrameworkCore;
-using Ordering.Application.Contracts.Persistence;
+using Ordering.Application.Contacts.Persistence;
 using Ordering.Domain.Models;
 using Ordering.Infrastructure.Persistence;
 
@@ -17,7 +17,8 @@ namespace Ordering.Infrastructure.Repository
 
         public async Task<IEnumerable<Order>> GetOrdersByUsername(string username)
         {
-            var orderList = await _dbContext.Orders.Where(s => s.Username.Equals(username, StringComparison.CurrentCultureIgnoreCase)).ToListAsync();
+            var result = await _dbContext.Orders.ToListAsync();
+            var orderList = result.Where(s => s.Username.Equals(username, StringComparison.CurrentCultureIgnoreCase)).ToList();
             return orderList;
         }
     }

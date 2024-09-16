@@ -1,4 +1,4 @@
-﻿using Ordering.Application.Contracts.Infrastructure;
+﻿using Ordering.Application.Contacts.Infrastructure;
 using Ordering.Application.Models;
 using QuickMailer;
 

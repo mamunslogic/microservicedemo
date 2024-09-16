@@ -1,7 +1,7 @@
 ﻿using EF.Core.Repository.Interface.Repository;
 using Ordering.Domain.Models;
 
-namespace Ordering.Application.Contracts.Persistence
+namespace Ordering.Application.Contacts.Persistence
 {
     public interface IOrderRepository : ICommonRepository<Order>
     {

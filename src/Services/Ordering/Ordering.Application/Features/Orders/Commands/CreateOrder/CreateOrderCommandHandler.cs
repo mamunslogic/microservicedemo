@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using MediatR;
-using Ordering.Application.Contracts.Infrastructure;
-using Ordering.Application.Contracts.Persistence;
+using Ordering.Application.Contacts.Infrastructure;
+using Ordering.Application.Contacts.Persistence;
 using Ordering.Domain.Models;
 
 namespace Ordering.Application.Features.Orders.Commands.CreateOrder
@@ -22,6 +22,9 @@ namespace Ordering.Application.Features.Orders.Commands.CreateOrder
         public async Task<bool> Handle(CreateOrderCommand request, CancellationToken cancellationToken)
         {
             var order = _mapper.Map<Order>(request);
+            order.CreatedBy = "Test";
+            order.CreatedDate = DateTime.Now;
+
             bool isOrderPlaced = await _orderRepository.AddAsync(order);
             if (isOrderPlaced)
             {

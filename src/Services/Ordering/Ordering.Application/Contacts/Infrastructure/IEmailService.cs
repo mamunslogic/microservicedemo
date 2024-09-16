@@ -1,6 +1,6 @@
 ﻿using Ordering.Application.Models;
 
-namespace Ordering.Application.Contracts.Infrastructure
+namespace Ordering.Application.Contacts.Infrastructure
 {
     public interface IEmailService
     {

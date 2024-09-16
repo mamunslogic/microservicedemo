@@ -1,7 +1,9 @@
 using Basket.API.GrpcServices;
 using Basket.API.Repositories;
 using Discount.Grpc.Protos;
+using MassTransit;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,6 +22,13 @@ builder.Services.AddGrpcClient<DiscountProtoService.DiscountProtoServiceClient>
     (options => options.Address = new Uri(builder.Configuration.GetValue<string>("GrpcSettings:DiscountGrpcUrl")));
 builder.Services.AddScoped<DiscountGrpcService>();
 builder.Services.AddScoped<IBasketRepository, BasketRepository>();
+builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
+
+//RabbitMQ Configuration
+builder.Services.AddMassTransit(config =>
+{
+    config.UsingRabbitMq((ctx, cfg) => { cfg.Host(builder.Configuration["EventBusSettings:RabbitMqHost"]); });
+});
 
 //builder.WebHost.ConfigureKestrel(options => options.ListenAnyIP(5004, o => o.Protocols = HttpProtocols.Http2));
 

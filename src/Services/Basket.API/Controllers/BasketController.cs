@@ -1,7 +1,10 @@
-﻿using Basket.API.GrpcServices;
+﻿using AutoMapper;
+using Basket.API.GrpcServices;
 using Basket.API.Models;
 using Basket.API.Repositories;
 using CoreApiResponse;
+using EventBus.Messages.Events;
+using MassTransit;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
@@ -13,11 +16,15 @@ namespace Basket.API.Controllers
     {
         IBasketRepository _basketRepository;
         DiscountGrpcService _discountGrpcService;
+        private readonly IPublishEndpoint _publishEndpoint;
+        IMapper _mapper;
 
-        public BasketController(IBasketRepository basketRepository, DiscountGrpcService discountGrpcService)
+        public BasketController(IBasketRepository basketRepository, DiscountGrpcService discountGrpcService, IPublishEndpoint publishEndpoint, IMapper mapper)
         {
             _basketRepository = basketRepository;
             _discountGrpcService = discountGrpcService;
+            _publishEndpoint = publishEndpoint;
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -50,8 +57,8 @@ namespace Basket.API.Controllers
                 // Create discount grpc service
                 foreach (var item in basket.Items)
                 {
-                   var coupon = await _discountGrpcService.GetDiscount(item.ProductId);
-                    if(coupon is not null)
+                    var coupon = await _discountGrpcService.GetDiscount(item.ProductId);
+                    if (coupon is not null)
                     {
                         item.Price -= coupon.Amount;
                     }
@@ -78,6 +85,26 @@ namespace Basket.API.Controllers
             {
                 return CustomResult(exception.Message, HttpStatusCode.BadRequest);
             }
+        }
+
+        [HttpPost]
+        [ProducesResponseType(typeof(void), (int)HttpStatusCode.OK)]
+        public async Task<IActionResult> Checkout([FromBody] BasketCheckout checkout)
+        {
+            var basket = await _basketRepository.GetBasket(checkout.Username);
+            if (basket == null)
+            {
+                return CustomResult("Basket is empty.", HttpStatusCode.BadRequest);
+            }
+
+            // Send checkout event to RabbitMQ
+            var eventMessage = _mapper.Map<BasketCheckoutEvent>(checkout);
+            eventMessage.TotalPrice = basket.TotalPrice;
+            await _publishEndpoint.Publish(eventMessage);
+
+            // Remove basket
+            await _basketRepository.DeleteBasket(basket.Username);
+            return CustomResult("Order has been placed.");
         }
     }
 }

@@ -16,6 +16,9 @@ namespace Ordering.Infrastructure.Persistence
                 .HasData(
                 new Order
                 {
+                    CreatedBy ="Test",
+                    CreatedDate = DateTime.Now,
+
                     Id = 1,
                     Username = "mamunslogic@gmail.com",
                     FirstName = "Abdur Rashid",
@@ -24,7 +27,14 @@ namespace Ordering.Infrastructure.Persistence
                     Address = "Dhaka",
                     City = "Dhaka",
                     State = "Bangladesh",
+                    ZipCode="1216",
                     TotalPrice = 100,
+                    PhoneNumber = "1234567890",
+                  
+                    CardName = "Mamun",
+                    CardNumber = "963852741",
+                    CVV = "639",
+                    Expiration = "1226",
                 }
                 //new Order
                 //{
